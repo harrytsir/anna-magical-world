@@ -223,6 +223,13 @@ main{padding-block:32px 80px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .map a:hover text,.map a:focus text{fill:var(--gold)}
 .map a circle{fill:var(--gold)}
 .map .minor{font-family:var(--f-ui);font-size:12px;fill:var(--muted);font-style:italic}
+.imap-box{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 6px 28px rgba(30,20,5,.18)}
+.imap-box img{display:block;width:100%;height:auto}
+.imap-box svg{position:absolute;inset:0;width:100%;height:100%}
+.hs circle{fill:rgba(255,236,170,0);stroke:rgba(168,116,26,0);transition:fill .15s,stroke .15s}
+.hs:hover circle,.hs:focus circle{fill:rgba(255,236,170,.3);stroke:#a8741a;stroke-width:5}
+.hs:focus{outline:none}
+.imap-tip{position:absolute;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--gold-line);border-radius:6px;padding:4px 10px;font-family:var(--f-ui);font-size:14px;font-weight:600;transform:translate(-50%,calc(-100% - 14px));white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.15)}
 .map-note{font-family:var(--f-ui);font-size:12.5px;color:var(--muted);margin:8px 0 0}
 @media (max-width:1100px){.e-grid{grid-template-columns:minmax(0,1fr)}.e-grid .infobox{order:-1;max-width:420px}}
 @media (max-width:860px){
@@ -295,7 +302,7 @@ const T={
       heroP:"Η εγκυκλοπαίδεια του κόσμου όπου ζουν η Άννα, ο Έαρον και η Κατιάννα. Βασίλεια, ήρωες, πλάσματα, ιστορίες, τραγούδια και χάρτες, για μικρούς και μεγάλους.",
       realms:"Τα εννέα βασίλεια",readOrder:"Σειρά ανάγνωσης",people:"Πρόσωπα",all:"Όλα",entries:"λήμματα",featured:"Προτεινόμενο λήμμα",dyk:"Το ήξερες;",more:"Διάβασε",
       spoil:"Δείξε τις αποκαλύψεις",spoilerBadge:"Αποκάλυψη",veil:"Αυτό το λήμμα αποκαλύπτει μυστικά από τα βιβλία.",show:"Δείξε το",
-      read:"Διάβασε την ιστορία",readCh:"Διάβασε το κεφάλαιο",contents:"Περιεχόμενα",prev:"Προηγούμενο",next:"Επόμενο",expanded:"Επέκταση",bookOf:"Από το βιβλίο",textMissing:"Το κείμενο αυτής της ιστορίας δεν έχει ανέβει ακόμα.",mapNote:"Σχηματικός χάρτης. Οι αποστάσεις δεν είναι ακριβείς. Πάτησε ένα βασίλειο για να ανοίξεις το λήμμα του.",related:"Συνδέεται με",mentions:"Αναφέρεται σε",updated:"Ενημερώθηκε",edit:"Επεξεργασία",newE:"Νέο λήμμα",toc:"Περιεχόμενα",trivia:"Μικρές λεπτομέρειες",other:"Άλλα",
+      read:"Διάβασε την ιστορία",readCh:"Διάβασε το κεφάλαιο",contents:"Περιεχόμενα",prev:"Προηγούμενο",next:"Επόμενο",expanded:"Επέκταση",bookOf:"Από το βιβλίο",textMissing:"Το κείμενο αυτής της ιστορίας δεν έχει ανέβει ακόμα.",imapNote:"Πάτησε πάνω σε ένα βασίλειο ή σε έναν τόπο για να ανοίξεις το λήμμα του.",mapNote:"Σχηματικός χάρτης. Οι αποστάσεις δεν είναι ακριβείς. Πάτησε ένα βασίλειο για να ανοίξεις το λήμμα του.",related:"Συνδέεται με",mentions:"Αναφέρεται σε",updated:"Ενημερώθηκε",edit:"Επεξεργασία",newE:"Νέο λήμμα",toc:"Περιεχόμενα",trivia:"Μικρές λεπτομέρειες",other:"Άλλα",
       noEn:"Το πλήρες κείμενο αυτού του λήμματος υπάρχει ακόμα μόνο στα ελληνικά.",noEl:"Αυτό το λήμμα υπάρχει μόνο στα αγγλικά.",
       loading:"Ανοίγει το βιβλίο…",noDb:"Τα λήμματα δεν μπορούν να φορτωθούν σε αυτή την προβολή. Άνοιξε τη σελίδα συνδεδεμένος στο claude.ai.",
       emptyH:"Ο κόσμος περιμένει τα πρώτα του λήμματα",emptyP:"Εδώ θα εμφανιστούν τα βασίλεια, οι χαρακτήρες και οι ιστορίες.",
@@ -314,7 +321,7 @@ const T={
       heroP:"The encyclopedia of the world where Anna, Earon and Katianna live. Kingdoms, heroes, creatures, stories, songs and maps, for young and old.",
       realms:"The nine kingdoms",readOrder:"Reading order",people:"People",all:"All",entries:"entries",featured:"Featured entry",dyk:"Did you know?",more:"Read",
       spoil:"Show revelations",spoilerBadge:"Spoiler",veil:"This entry reveals secrets from the books.",show:"Show it",
-      read:"Read the story",readCh:"Read the chapter",contents:"Contents",prev:"Previous",next:"Next",expanded:"Expansion",bookOf:"From the book",textMissing:"The text of this story has not been added yet.",mapNote:"A schematic map. Distances are not exact. Tap a kingdom to open its entry.",related:"Linked to",mentions:"Mentioned in",updated:"Updated",edit:"Edit",newE:"New entry",toc:"Contents",trivia:"Trivia",other:"Other",
+      read:"Read the story",readCh:"Read the chapter",contents:"Contents",prev:"Previous",next:"Next",expanded:"Expansion",bookOf:"From the book",textMissing:"The text of this story has not been added yet.",imapNote:"Tap a kingdom or a place on the map to open its entry.",mapNote:"A schematic map. Distances are not exact. Tap a kingdom to open its entry.",related:"Linked to",mentions:"Mentioned in",updated:"Updated",edit:"Edit",newE:"New entry",toc:"Contents",trivia:"Trivia",other:"Other",
       noEn:"The full text of this entry is still only available in Greek.",noEl:"This entry exists only in English.",
       loading:"Opening the book…",noDb:"Entries cannot load in this view. Open the page while signed in to claude.ai.",
       emptyH:"The world is waiting for its first entries",emptyP:"Kingdoms, characters and stories will appear here.",
@@ -460,7 +467,7 @@ function vCat(cid){
   if(!list.length)return h+`<div class="empty"><p>${esc(t().emptyCat)}</p>${S.canEdit?`<a class="btn primary" href="#new" data-cat="${cid}">+ ${esc(t().newE)}</a>`:""}</div>`;
   if(cid==="books")return h+`<div class="shelf">${list.map(shelfRow).join("")}</div>`;
   if(cid==="kingdoms")return h+`<div class="realms">${list.map(realmCard).join("")}</div>`;
-  if(cid==="maps"){const extra=sorted([...S.entries.values()].filter(e=>e.cat!=="maps"&&e.image&&visible(e)));const mp=list.filter(e=>e.widget==="map");const rest=list.filter(e=>e.widget!=="map").concat(extra);return h+(mp.length?`<div class="list" style="margin-bottom:20px">${mp.map(card).join("")}</div>`:"")+`<div class="gallery">${rest.map(e=>`<a href="#e-${esc(e.id)}">${e.image?`<img src="${imgUrl(e.image)}" alt="" loading="lazy">`:""}${esc(tx(e,"title"))}</a>`).join("")}</div>`;}
+  if(cid==="maps"){const extra=sorted([...S.entries.values()].filter(e=>e.cat!=="maps"&&e.image&&visible(e)));const mp=list.filter(e=>e.widget==="map"||e.widget==="imagemap");const rest=list.filter(e=>e.widget!=="map"&&e.widget!=="imagemap").concat(extra);return h+(mp.length?`<div class="list" style="margin-bottom:20px">${mp.map(card).join("")}</div>`:"")+`<div class="gallery">${rest.map(e=>`<a href="#e-${esc(e.id)}">${e.image?`<img src="${imgUrl(e.image)}" alt="" loading="lazy">`:""}${esc(tx(e,"title"))}</a>`).join("")}</div>`;}
   const gs=groupsOf(list);
   if(gs.length===1&&gs[0][0]==="")return h+`<div class="list">${list.map(card).join("")}</div>`;
   return h+gs.map(([g,items])=>`<section class="group"><h2>${esc(bi(g)||t().other)}</h2><div class="list">${items.map(card).join("")}</div></section>`).join("");
@@ -477,8 +484,8 @@ function vEntry(id){
   const back=[...S.entries.values()].filter(x=>x.id!==e.id&&visible(x)&&linksOut(x).includes(e.id));
   const heads=[];const body=render(tx(e,"body"),heads);
   const info=Array.isArray(e.info)?e.info.filter(r=>r&&r[0]):[];
-  const hasBox=e.image||info.length;
-  const box=hasBox?`<aside class="infobox"><div class="ib-title">${esc(tx(e,"title"))}</div>${e.image?`<img src="${imgUrl(e.image)}" alt="${esc(tx(e,"title"))}">`:""}${info.length?`<dl>${info.map(r=>`<dt>${esc(lbl(r[0]))}</dt><dd>${inline(S.lang==="en"&&r[2]?r[2]:(r[1]||""))}</dd>`).join("")}</dl>`:""}</aside>`:"";
+  const hasBox=(e.image&&e.widget!=="imagemap")||info.length;
+  const box=hasBox?`<aside class="infobox"><div class="ib-title">${esc(tx(e,"title"))}</div>${e.image&&e.widget!=="imagemap"?`<img src="${imgUrl(e.image)}" alt="${esc(tx(e,"title"))}">`:""}${info.length?`<dl>${info.map(r=>`<dt>${esc(lbl(r[0]))}</dt><dd>${inline(S.lang==="en"&&r[2]?r[2]:(r[1]||""))}</dd>`).join("")}</dl>`:""}</aside>`:"";
   const toc=heads.length>=3?`<nav class="toc" aria-label="${esc(t().toc)}"><div class="label">${esc(t().toc)}</div><ol>${heads.map((x,i)=>`<li><button type="button" data-jump="sec-${i}">${esc(x.replace(/\|\|/g,""))}</button></li>`).join("")}</ol></nav>`:"";
   const triv=Array.isArray(e.trivia)&&e.trivia.length?`<div class="trivia"><div class="label">${esc(t().trivia)}</div><ul>${e.trivia.map(x=>`<li>${inline(bi(x))}</li>`).join("")}</ul></div>`:"";
   const readBtn=e.hasText?`<a class="btn primary readbtn" href="#r-${esc(e.id)}">${esc(e.kicker&&/^(ΚΕΦ|Κεφ|Πρόλ|Επίλ)/.test(e.kicker)?t().readCh:t().read)} →</a>`:"";
@@ -491,6 +498,7 @@ function vEntry(id){
   return `<article class="entry">
     <div class="crumbs">${e.cat==="stories"&&e.book&&S.entries.get(e.book)?`<a href="#e-${esc(e.book)}">${esc(tx(S.entries.get(e.book),"title"))}</a>`:`<a href="#c-${esc(e.cat)}">${esc(catName(e.cat))}</a>${e.group?`<span>· ${esc(bi(e.group))}</span>`:""}`}${e.spoiler?`<span class="badge" style="margin:0">${esc(t().spoilerBadge)}</span>`:""}${e.badge?`<span class="badge" style="margin:0">${esc(e.badge)}</span>`:""}${S.canEdit&&e.exp?`<span class="badge exp" style="margin:0">${esc(t().expanded)}</span>`:""}</div>
     <div><h1>${esc(tx(e,"title"))}</h1>${alt}</div>
+    ${e.widget==="imagemap"?imageMap(e):""}
     ${veiled?`<div class="veil"><div class="hide" aria-hidden="true">${inner}</div><div class="reveal"><div><p style="margin:0 0 12px">${esc(t().veil)}</p><button class="btn primary" data-reveal="${esc(e.id)}">${esc(t().show)}</button></div></div></div>`:inner}
     ${out.length?`<div><div class="label" style="margin-bottom:8px">${esc(t().related)}</div><div class="related">${out.map(x=>`<a class="chip" href="#e-${esc(x.id)}">${esc(tx(x,"title"))}</a>`).join("")}</div></div>`:""}
     ${back.length?`<div><div class="label" style="margin-bottom:8px">${esc(t().mentions)}</div><div class="related">${sorted(back).map(x=>`<a class="chip" href="#e-${esc(x.id)}">${esc(tx(x,"title"))}</a>`).join("")}</div></div>`:""}
@@ -523,6 +531,11 @@ function vRead(id){
     <div class="text" lang="el">${text}</div>
     <nav class="pager">${pg(prev,"prev","← "+t().prev)}${pg(next,"next",t().next+" →")}</nav>
   </article>`;
+}
+function imageMap(e){
+  const hs=(e.hotspots||[]).map(h=>{const x=S.entries.get(h[0]);if(!x||!visible(x))return"";const n=tx(x,"title");
+    return `<a href="#e-${esc(h[0])}" class="hs" data-name="${esc(n)}" aria-label="${esc(n)}"><circle cx="${h[1]}" cy="${h[2]}" r="${h[3]||26}"/></a>`;}).join("");
+  return `<figure style="margin:0"><div class="imap-box"><img src="${imgUrl(e.image)}" alt="${esc(tx(e,"title"))}"><svg viewBox="0 0 ${e.mapW||2400} ${e.mapH||1700}" preserveAspectRatio="none">${hs}</svg><div class="imap-tip" hidden></div></div><figcaption class="map-note">${esc(t().imapNote)}</figcaption></figure>`;
 }
 function worldMap(){
   const K=[["farongwest",235,300],["kardor",255,95],["eldamor",440,255],["mithloria",630,190],["aktilia",330,452],["alfeloria",112,488],["alfata",520,520],["ourania-politeia",640,420],["skiochora",722,206]];
@@ -663,6 +676,8 @@ document.addEventListener("click",ev=>{
     S.db.collection("entries").doc(id).delete().then(()=>{S.editing=null;location.hash=cat?"#c-"+cat:"#home";})
       .catch(()=>{a.disabled=false;const st=$("#f-status");st.textContent=t().f.failSave;st.className="status err";});}
 });
+document.addEventListener("mousemove",ev=>{const tip=document.querySelector(".imap-tip");if(!tip)return;const a=ev.target.closest&&ev.target.closest("a.hs");
+  if(!a){tip.hidden=true;return;}const b=tip.parentElement.getBoundingClientRect();tip.textContent=a.dataset.name;tip.style.left=(ev.clientX-b.left)+"px";tip.style.top=(ev.clientY-b.top)+"px";tip.hidden=false;});
 document.addEventListener("keydown",ev=>{if((ev.key==="Enter"||ev.key===" ")&&ev.target.classList?.contains("spoil")){ev.preventDefault();ev.target.classList.add("shown");}});
 document.addEventListener("change",async ev=>{
   if(ev.target.id==="spoilers"){S.spoilers=ev.target.checked;try{localStorage.setItem("nk.spoil",S.spoilers?"1":"0")}catch(e){}route();return;}
