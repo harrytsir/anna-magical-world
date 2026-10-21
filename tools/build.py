@@ -1,10 +1,10 @@
 """Build the public static site from the live Claude artifact data.
-Inputs: /home/claude/nine-kingdoms.html, /home/claude/live/{entries,texts,img}
+Inputs: tools/page-source.html (η σελίδα του artifact), /home/claude/live/{entries,texts,img}
 Output: /home/claude/site
 """
 import json,glob,os,re,shutil
 from PIL import Image
-SRC='/home/claude/nine-kingdoms.html'; LIVE='/home/claude/live'; OUT='/home/claude/anna-magical-world/public'
+SRC=os.path.join(os.path.dirname(os.path.abspath(__file__)),'page-source.html'); LIVE='/home/claude/live'; OUT='/home/claude/anna-magical-world/public'
 os.makedirs(OUT+'/data/texts',exist_ok=True); os.makedirs(OUT+'/img',exist_ok=True)
 # entries
 E=[]

@@ -211,7 +211,8 @@ main{padding-block:32px 80px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .reader .text p{margin:0 0 .95em;text-indent:1.4em}
 .reader .text p.first,.reader .text p.v{text-indent:0}
 .reader .text p.v{font-style:italic;padding-left:1.4em;margin:0 0 .2em}
-.reader .text .orn+p{text-indent:0}
+.reader .text .orn+p,.reader .text h3.rh+p{text-indent:0}
+.reader .text h3.rh{font-size:26px;margin:1.6em 0 .7em;text-align:center}
 .pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid var(--line);padding-top:16px;font-family:var(--f-ui)}
 .pager a{display:flex;flex-direction:column;gap:2px;text-decoration:none;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);min-width:0}
 .pager a:hover{border-color:var(--gold-line)}
@@ -285,14 +286,14 @@ main{padding-block:32px 80px;padding-left:max(16px,env(safe-area-inset-left,0px)
 /* ---------- vocabulary ---------- */
 const CATS=[
   {id:"books",     el:"Βιβλία",              en:"Books"},
-  {id:"stories",   el:"Ιστορίες",            en:"Stories"},
+  {id:"history",   el:"Ιστορίες",            en:"Stories & History"},
+  {id:"stories",   el:"Κεφάλαια",            en:"Chapters", hidden:true},
   {id:"kingdoms",  el:"Βασίλεια",            en:"Kingdoms"},
   {id:"places",    el:"Τόποι",               en:"Places"},
   {id:"characters",el:"Χαρακτήρες",          en:"Characters"},
   {id:"creatures", el:"Πλάσματα & Λαοί",     en:"Creatures & Peoples"},
   {id:"items",     el:"Αντικείμενα",         en:"Objects"},
   {id:"lore",      el:"Μαγεία & Θρύλοι",     en:"Magic & Lore"},
-  {id:"history",   el:"Ιστορία",             en:"History"},
   {id:"songs",     el:"Τραγούδια",           en:"Songs"},
   {id:"maps",      el:"Χάρτες & Εικόνες",    en:"Maps & Art"}
 ];
@@ -415,7 +416,7 @@ function paintChrome(){
   $("#spoilerLabel").textContent=t().spoil;$("#spoilers").checked=S.spoilers;
   const route=location.hash.slice(1)||"home";
   let nav=`<a href="#home" ${route==="home"?'aria-current="true"':""}>${esc(t().home)}</a>`;
-  CATS.forEach(c=>{const n=[...S.entries.values()].filter(e=>e.cat===c.id&&visible(e)).length;
+  CATS.filter(c=>!c.hidden).forEach(c=>{const n=[...S.entries.values()].filter(e=>e.cat===c.id&&visible(e)).length;
     nav+=`<a href="#c-${c.id}" ${route==="c-"+c.id?'aria-current="true"':""}>${esc(c[S.lang])}<span>${n||""}</span></a>`;});
   $("#nav").innerHTML=nav;
   $("#editorSlot").innerHTML=S.canEdit&&S.dbOk?`<div class="sep"></div><div class="label" style="padding:0 10px 8px">${esc(t().editorMode)}</div><a class="btn primary" style="margin:0 10px" href="#new">+ ${esc(t().newE)}</a>`:"";
@@ -497,7 +498,7 @@ function vEntry(id){
   const inner=`<div class="e-grid${hasBox?"":" solo"}">${main}${box}</div>`;
   const veiled=e.spoiler&&!S.spoilers&&!S.revealed.has(e.id);
   return `<article class="entry">
-    <div class="crumbs"><a href="#c-${esc(e.cat)}">${esc(catName(e.cat))}</a>${e.group?`<span>· ${esc(bi(e.group))}</span>`:""}${e.spoiler?`<span class="badge" style="margin:0">${esc(t().spoilerBadge)}</span>`:""}${e.badge?`<span class="badge" style="margin:0">${esc(e.badge)}</span>`:""}${S.canEdit&&e.exp?`<span class="badge exp" style="margin:0">${esc(t().expanded)}</span>`:""}</div>
+    <div class="crumbs">${e.cat==="stories"&&e.book&&S.entries.get(e.book)?`<a href="#e-${esc(e.book)}">${esc(tx(S.entries.get(e.book),"title"))}</a>`:`<a href="#c-${esc(e.cat)}">${esc(catName(e.cat))}</a>${e.group?`<span>· ${esc(bi(e.group))}</span>`:""}`}${e.spoiler?`<span class="badge" style="margin:0">${esc(t().spoilerBadge)}</span>`:""}${e.badge?`<span class="badge" style="margin:0">${esc(e.badge)}</span>`:""}${S.canEdit&&e.exp?`<span class="badge exp" style="margin:0">${esc(t().expanded)}</span>`:""}</div>
     <div><h1>${esc(tx(e,"title"))}</h1>${alt}</div>
     ${veiled?`<div class="veil"><div class="hide" aria-hidden="true">${inner}</div><div class="reveal"><div><p style="margin:0 0 12px">${esc(t().veil)}</p><button class="btn primary" data-reveal="${esc(e.id)}">${esc(t().show)}</button></div></div></div>`:inner}
     ${out.length?`<div><div class="label" style="margin-bottom:8px">${esc(t().related)}</div><div class="related">${out.map(x=>`<a class="chip" href="#e-${esc(x.id)}">${esc(tx(x,"title"))}</a>`).join("")}</div></div>`:""}
@@ -520,6 +521,7 @@ function vRead(id){
   if(!cached)text=`<p class="status" style="text-align:center">${esc(cached===false?t().textMissing:t().loading)}</p>`;
   else{let first=true;text=String(cached.body||"").split(/\n\s*\n/).map(p=>{p=p.trim();if(!p)return"";
       if(/^(\*\s*\*\s*\*|~\s*✦\s*~)$/.test(p)){first=true;return `<div class="orn" aria-hidden="true">✦ ✦ ✦</div>`;}
+      if(p.startsWith("## ")){first=true;return `<h3 class="rh">${esc(p.slice(3))}</h3>`;}
       if(p.startsWith("> ")){return `<p class="v">${esc(p.slice(2)).replace(/\n> ?/g,"<br>")}</p>`;}
       const c=first?' class="first"':"";first=false;return `<p${c}>${esc(p).replace(/\n/g,"<br>")}</p>`;}).join("");}
   const pg=(x,cls,lab)=>x?`<a class="${cls}" href="#r-${esc(x.id)}"><small>${esc(lab)}</small><b>${esc(tx(x,"title"))}</b></a>`:"";
