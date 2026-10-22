@@ -167,7 +167,7 @@ add(f'<path d="{path(lake)}" fill="url(#waves)" opacity=".8"/>')
 # dragon lake
 add(f'<ellipse cx="1866" cy="322" rx="13" ry="9" fill="#a9b3ab" stroke="{INK}" stroke-width="1.4"/>')
 # star lake
-add(f'<circle cx="2025" cy="505" r="7" fill="#a9b3ab" stroke="{INK}" stroke-width="1.2"/>')
+
 
 # ---------- mountains & forests ----------
 range_(640, 255, 300, 130, 70, 26, 34, snow=True)                 # Kardor
@@ -191,7 +191,8 @@ forest(1240, 520, 200, 260, 90, 8, 22, col='#7f9150')           # Eldamor
 forest(1085, 890, 115, 85, 55, 12, 18, dark=True)                 # Moonforest
 forest(1720, 640, 55, 85, 22, 11, 17, kind='fir', dark=True)      # Nyktofyllo
 forest(2010, 720, 70, 45, 22, 11, 17, kind='fir')                 # Wind forest
-forest(1985, 505, 40, 28, 10, 9, 15, kind='fir')                  # Star forest
+forest(2040, 498, 48, 32, 16, 9, 14, kind='fir')                  # Star forest
+add(f'<circle cx="2040" cy="502" r="8" fill="#a9b3ab" stroke="{INK}" stroke-width="1.2"/>')  # star lake inside the forest
 forest(1420, 900, 70, 40, 14, 9, 18, kind='fir', dark=True)       # rusted woods
 forest(2315, 760, 60, 90, 12, 9, 20, kind='fir', dark=True)       # leafless trees of Skiochora
 # mist over Nyktofyllo & Alfeloria
@@ -277,11 +278,11 @@ text(1945, 586, 'Μαυρολίμνη', 15, 'GFS Porson', fill='#3f5456')
 tower(1995, 600, 0.7); note(2020, 622, ['πύργος του λιμανιού'], 12, anchor='start')
 text(1900, 235, 'ΜΙΘΛΟΡΙΑ', 50, ls=10)
 note(1900, 120, ['Τα Παγωμένα Βουνά', '(οι καλικάντζαροι)'], 15)
-note(2055, 300, ['ο Κοιμισμένος'], 14, anchor='start'); town(2045, 365, '', ); note(2056, 380, ['Ψηλολίβαδο'], 13, anchor='start')
+note(2055, 300, ['το Κοιμισμένο'], 14, anchor='start'); town(2045, 365, '', ); note(2056, 380, ['Ψηλολίβαδο'], 13, anchor='start')
 note(1860, 300, ['η λίμνη του Χρυσόλεπου'], 13, anchor='end')
 text(1860, 425, 'Χρυσός Ποταμός', 13, 'GFS Porson', fill='#4f6466', rot=78)
 town(1955, 445, '', ); note(1965, 440, ['λόφος του Κρίνου'], 12, anchor='start')
-note(2040, 520, ['Λίμνη του Άστρου'], 12, anchor='start')
+note(2040, 545, ['Δάσος των Αστεριών', '(η Λίμνη του Άστρου)'], 12)
 note(1712, 530, ['Νυκτόφυλλο', '(το δάσος που θυμάται)'], 14)
 town(1835, 640, 'Λευκόβρυση', 14, dy=18)
 note(2010, 668, ['Δάσος των Ανέμων'], 14)
